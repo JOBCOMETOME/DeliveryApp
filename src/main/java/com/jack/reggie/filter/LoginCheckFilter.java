@@ -1,6 +1,7 @@
 package com.jack.reggie.filter;
 
 import com.alibaba.fastjson.JSON;
+import com.jack.reggie.common.BaseContext;
 import com.jack.reggie.common.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.AntPathMatcher;
@@ -33,7 +34,10 @@ public class LoginCheckFilter implements Filter {
                 "/employee/login",
                 "/employee/logout",
                 "/backend/**",
-                ""
+                "/front/**",
+                "/common/**",
+                "/user/sendMsg",
+                "/user/login"
         };
 
         boolean check = check(requestURI,urls);
@@ -47,9 +51,27 @@ public class LoginCheckFilter implements Filter {
         // check already logged in?
         if(httpServletRequest.getSession().getAttribute("employee") != null){
             log.info("User already logged in, User id is : {}",httpServletRequest.getSession().getAttribute("employee"));
+
+            Long empId = (Long) httpServletRequest.getSession().getAttribute("employee");
+            BaseContext.setCurrentId(empId);
+
+
             filterChain.doFilter(httpServletRequest,httpServletResponse);
             return;
         }
+
+        // check already logged in?
+        if(httpServletRequest.getSession().getAttribute("user") != null){
+            log.info("User already logged in, User id is : {}",httpServletRequest.getSession().getAttribute("user"));
+
+            Long userId = (Long) httpServletRequest.getSession().getAttribute("user");
+            BaseContext.setCurrentId(userId);
+
+
+            filterChain.doFilter(httpServletRequest,httpServletResponse);
+            return;
+        }
+
         // Stream the data to front end
         httpServletResponse.getWriter().write(JSON.toJSONString(R.error("NOTLOGIN")));
 

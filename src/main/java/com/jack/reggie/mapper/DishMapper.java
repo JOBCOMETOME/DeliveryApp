@@ -1,2 +1,9 @@
-package com.jack.reggie.mapper;public interface DishMapper {
+package com.jack.reggie.mapper;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.jack.reggie.entity.Dish;
+import org.apache.ibatis.annotations.Mapper;
+
+@Mapper
+public interface DishMapper extends BaseMapper<Dish> {
 }

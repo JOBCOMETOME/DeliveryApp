@@ -1,2 +1,9 @@
-package com.jack.reggie.mapper;public interface SetMealMapper {
+package com.jack.reggie.mapper;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.jack.reggie.entity.Setmeal;
+import org.apache.ibatis.annotations.Mapper;
+
+@Mapper
+public interface SetmealMapper extends BaseMapper<Setmeal> {
 }
